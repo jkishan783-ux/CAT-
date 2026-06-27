@@ -2,6 +2,8 @@ import { Response } from 'express';
 import fs from 'fs';
 import { AuthenticatedRequest } from '../middleware/authMiddleware';
 import Question from '../models/Question';
+import User from '../models/User';
+import Attempt from '../models/Attempt';
 import { parseQuestionsCSV } from '../utils/csvParser';
 
 /**
@@ -46,6 +48,34 @@ export async function uploadQuestions(req: AuthenticatedRequest, res: Response) 
         details: parseError.message,
       });
     }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+/**
+ * GET /api/admin/users
+ * Returns list of all active registered users.
+ */
+export async function getAdminUsers(req: AuthenticatedRequest, res: Response) {
+  try {
+    const users = await User.find({}, '-passwordHash').sort({ createdAt: -1 });
+    return res.status(200).json(users);
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+/**
+ * GET /api/admin/attempts
+ * Returns list of all mock test attempt history with grades.
+ */
+export async function getAdminAttempts(req: AuthenticatedRequest, res: Response) {
+  try {
+    const attempts = await Attempt.find()
+      .populate('userId', 'name email')
+      .sort({ completedAt: -1 });
+    return res.status(200).json(attempts);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
