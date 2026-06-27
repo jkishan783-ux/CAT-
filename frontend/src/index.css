@@ -28,6 +28,24 @@
   --transition-normal: 0.3s ease;
 }
 
+[data-theme="light"] {
+  --bg-main: #F3F4F6;
+  --bg-card: #FFFFFF;
+  --bg-input: #F9FAFB;
+  --border-color: #E5E7EB;
+  
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(229, 231, 235, 0.9);
+  --glass-shadow: rgba(0, 0, 0, 0.05);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

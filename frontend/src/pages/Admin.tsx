@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/Logo';
+import ThemeToggle from '../components/ThemeToggle';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -183,10 +185,16 @@ export default function Admin() {
     <div style={styles.pageContainer}>
       {/* Navigation Header */}
       <header style={styles.navHeader}>
-        <div style={styles.navBrand}>Admin Control Center</div>
-        <button style={styles.backBtnHeader} onClick={() => navigate('/dashboard')}>
-          Back to Dashboard
-        </button>
+        <div style={styles.navBrandContainer}>
+          <Logo />
+          <span style={styles.navBrand}>CRACK IIM Admin</span>
+        </div>
+        <div style={styles.navUserControls}>
+          <ThemeToggle />
+          <button style={styles.backBtnHeader} onClick={() => navigate('/dashboard')}>
+            Back to Dashboard
+          </button>
+        </div>
       </header>
 
       {/* Tabs list switch header */}
@@ -426,18 +434,28 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: '20px',
-    borderBottom: '1px solid #26262E',
+    borderBottom: '1px solid var(--border-color)',
     marginBottom: '32px',
+  },
+  navBrandContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
   },
   navBrand: {
     fontSize: '22px',
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
+  },
+  navUserControls: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
   },
   backBtnHeader: {
-    backgroundColor: '#1C1C22',
-    color: '#FFFFFF',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--text-primary)',
+    border: '1px solid var(--border-color)',
     padding: '8px 16px',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -448,13 +466,13 @@ const styles = {
     display: 'flex',
     gap: '12px',
     marginBottom: '24px',
-    borderBottom: '1px solid #1C1C22',
+    borderBottom: '1px solid var(--border-color)',
     paddingBottom: '12px',
   },
   tabBtn: {
     backgroundColor: 'transparent',
     border: 'none',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     fontSize: '14px',
     fontWeight: '600',
     padding: '8px 16px',
@@ -465,7 +483,7 @@ const styles = {
   tabBtnActive: {
     backgroundColor: 'rgba(59, 130, 246, 0.1)',
     border: 'none',
-    color: '#3B82F6',
+    color: 'var(--color-primary)',
     fontSize: '14px',
     fontWeight: '700',
     padding: '8px 16px',
@@ -484,17 +502,17 @@ const styles = {
   tabTitle: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
   },
   tabSubtitle: {
     fontSize: '13px',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     marginBottom: '24px',
   },
   refreshBtn: {
-    backgroundColor: '#1C1C22',
-    color: '#3B82F6',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--color-primary)',
+    border: '1px solid var(--border-color)',
     padding: '6px 12px',
     borderRadius: '6px',
     fontSize: '12px',
@@ -504,88 +522,88 @@ const styles = {
   loadingMessage: {
     padding: '40px 0',
     textAlign: 'center' as const,
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     fontSize: '14px',
   },
   tableWrap: {
     overflowX: 'auto' as const,
-    border: '1px solid #26262E',
+    border: '1px solid var(--border-color)',
     borderRadius: '12px',
-    backgroundColor: '#0F0F12',
+    backgroundColor: 'var(--bg-card)',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse' as const,
   },
   tableHeaderRow: {
-    backgroundColor: '#16161B',
-    borderBottom: '1px solid #26262E',
+    backgroundColor: 'var(--bg-main)',
+    borderBottom: '1px solid var(--border-color)',
   },
   tableHeaderColLeft: {
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     fontSize: '12px',
     fontWeight: '600',
     padding: '14px 18px',
     textAlign: 'left' as const,
   },
   tableHeaderCol: {
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     fontSize: '12px',
     fontWeight: '600',
     padding: '14px 18px',
     textAlign: 'right' as const,
   },
   tableRow: {
-    borderBottom: '1px solid #1C1C22',
+    borderBottom: '1px solid var(--border-color)',
   },
   tableCellLeft: {
-    color: '#E1E1E6',
+    color: 'var(--text-primary)',
     fontSize: '13px',
     padding: '16px 18px',
     textAlign: 'left' as const,
   },
   tableCellLeftBold: {
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     fontWeight: '600',
     fontSize: '13px',
     padding: '16px 18px',
     textAlign: 'left' as const,
   },
   tableCell: {
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     fontSize: '13px',
     padding: '16px 18px',
     textAlign: 'right' as const,
   },
   tableCellBold: {
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     fontWeight: '600',
     fontSize: '13px',
     padding: '16px 18px',
     textAlign: 'right' as const,
   },
   tableCellSuccess: {
-    color: '#10B981',
+    color: 'var(--color-success)',
     fontWeight: '600',
     fontSize: '13px',
     padding: '16px 18px',
     textAlign: 'right' as const,
   },
   tableCellDanger: {
-    color: '#EF4444',
+    color: 'var(--color-danger)',
     fontWeight: '600',
     fontSize: '13px',
     padding: '16px 18px',
     textAlign: 'right' as const,
   },
   streakWrap: {
-    color: '#F97316',
+    color: 'var(--color-orange)',
     fontWeight: '600',
   },
   roleBadgeAdmin: {
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    border: '1px solid #EF4444',
-    color: '#EF4444',
+    border: '1px solid var(--color-danger)',
+    color: 'var(--color-danger)',
     padding: '2px 8px',
     borderRadius: '4px',
     fontSize: '11px',
@@ -594,8 +612,8 @@ const styles = {
   },
   roleBadgeUser: {
     backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    border: '1px solid #10B981',
-    color: '#10B981',
+    border: '1px solid var(--color-success)',
+    color: 'var(--color-success)',
     padding: '2px 8px',
     borderRadius: '4px',
     fontSize: '11px',
@@ -603,30 +621,30 @@ const styles = {
     textTransform: 'uppercase' as const,
   },
   boldText: {
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     fontWeight: '600',
   },
   subText: {
-    color: '#535362',
+    color: 'var(--text-muted)',
     fontSize: '11px',
     marginTop: '2px',
   },
   testTypeBadge: {
-    backgroundColor: '#1C1C22',
-    color: '#3B82F6',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--color-primary)',
+    border: '1px solid var(--border-color)',
     padding: '2px 6px',
     borderRadius: '4px',
     fontSize: '11px',
     fontWeight: '600',
   },
   mutedText: {
-    color: '#535362',
+    color: 'var(--text-muted)',
     fontStyle: 'italic',
   },
   code: {
-    color: '#3B82F6',
-    backgroundColor: '#0A0A0C',
+    color: 'var(--color-primary)',
+    backgroundColor: 'var(--bg-main)',
     padding: '2px 6px',
     borderRadius: '4px',
     fontSize: '12px',
@@ -634,20 +652,20 @@ const styles = {
   },
   successAlert: {
     backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    border: '1px solid #10B981',
+    border: '1px solid var(--color-success)',
     borderRadius: '8px',
     padding: '14px',
-    color: '#10B981',
+    color: 'var(--color-success)',
     fontSize: '14px',
     fontWeight: '600',
     marginBottom: '20px',
   },
   errorAlert: {
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    border: '1px solid #EF4444',
+    border: '1px solid var(--color-danger)',
     borderRadius: '8px',
     padding: '14px',
-    color: '#EF4444',
+    color: 'var(--color-danger)',
     fontSize: '14px',
     fontWeight: '600',
     marginBottom: '20px',
@@ -665,22 +683,22 @@ const styles = {
   inputLabel: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
   },
   selectInput: {
-    backgroundColor: '#0F0F12',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-main)',
+    border: '1px solid var(--border-color)',
     borderRadius: '8px',
     height: '44px',
     padding: '0 12px',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     fontSize: '14px',
     outline: 'none',
   },
   uploadBox: {
-    border: '2px dashed #26262E',
+    border: '2px dashed var(--border-color)',
     borderRadius: '12px',
-    backgroundColor: '#0F0F12',
+    backgroundColor: 'var(--bg-main)',
     height: '160px',
     display: 'flex',
     justifyContent: 'center',
@@ -712,10 +730,10 @@ const styles = {
   },
   uploadText: {
     fontSize: '14px',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
   },
   uploadBtn: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: 'var(--color-primary)',
     color: '#FFFFFF',
     border: 'none',
     borderRadius: '8px',

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/Logo';
+import ThemeToggle from '../components/ThemeToggle';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -96,9 +98,13 @@ export default function Dashboard() {
     <div style={styles.pageContainer}>
       {/* Navigation Header */}
       <header style={styles.navHeader}>
-        <div style={styles.navBrand}>CAT Preparation Dashboard</div>
+        <div style={styles.navBrandContainer}>
+          <Logo />
+          <span style={styles.navBrand}>CRACK IIM</span>
+        </div>
         <div style={styles.navUserControls}>
           <span style={styles.userName}>Hello, {user?.name}</span>
+          <ThemeToggle />
           {user?.role === 'admin' && (
             <button style={styles.adminBtn} onClick={() => navigate('/admin')}>
               Admin Panel
@@ -227,7 +233,7 @@ const styles = {
     alignItems: 'center',
     minHeight: '100vh',
     fontSize: '18px',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
   },
   pageContainer: {
     padding: '24px',
@@ -240,13 +246,18 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: '20px',
-    borderBottom: '1px solid #26262E',
+    borderBottom: '1px solid var(--border-color)',
     marginBottom: '32px',
+  },
+  navBrandContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
   },
   navBrand: {
     fontSize: '22px',
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
   },
   navUserControls: {
     display: 'flex',
@@ -254,13 +265,13 @@ const styles = {
     gap: '16px',
   },
   userName: {
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     fontSize: '14px',
   },
   adminBtn: {
-    backgroundColor: '#1C1C22',
-    color: '#3B82F6',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--color-primary)',
+    border: '1px solid var(--border-color)',
     padding: '6px 14px',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -268,7 +279,7 @@ const styles = {
     fontWeight: '600',
   },
   logoutBtn: {
-    backgroundColor: '#EF4444',
+    backgroundColor: 'var(--color-danger)',
     color: '#FFFFFF',
     border: 'none',
     padding: '6px 14px',
@@ -295,7 +306,7 @@ const styles = {
     alignItems: 'center',
     gap: '20px',
     marginBottom: '32px',
-    borderLeft: '4px solid #F97316',
+    borderLeft: '4px solid var(--color-orange)',
   },
   streakFlameIcon: {
     fontSize: '40px',
@@ -304,11 +315,11 @@ const styles = {
   streakNum: {
     fontSize: '26px',
     fontWeight: '800',
-    color: '#F97316',
+    color: 'var(--color-orange)',
   },
   streakLabel: {
     fontSize: '13px',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     marginVertical: '2px',
   },
   streakStatus: {
@@ -327,7 +338,7 @@ const styles = {
   sectionTitle: {
     fontSize: '18px',
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     marginBottom: '16px',
   },
   testsGrid: {
@@ -348,43 +359,43 @@ const styles = {
   testTitle: {
     fontSize: '16px',
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
   },
   testDuration: {
     fontSize: '11px',
-    backgroundColor: '#1C1C22',
-    color: '#8E8E9F',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--text-secondary)',
     padding: '3px 8px',
     borderRadius: '4px',
-    border: '1px solid #26262E',
+    border: '1px solid var(--border-color)',
   },
   testDesc: {
     fontSize: '13px',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     lineHeight: '18px',
     marginBottom: '14px',
   },
   countdownRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    backgroundColor: '#0A0A0C',
+    backgroundColor: 'var(--bg-main)',
     padding: '8px 12px',
     borderRadius: '6px',
     fontSize: '12px',
     marginBottom: '14px',
-    border: '1px solid #1C1C22',
+    border: '1px solid var(--bg-input)',
   },
   countdownLabel: {
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
   },
   countdownTime: {
-    color: '#3B82F6',
+    color: 'var(--color-primary)',
     fontWeight: '700',
   },
   testBtn: {
-    backgroundColor: '#1C1C22',
-    color: '#FFFFFF',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--text-primary)',
+    border: '1px solid var(--border-color)',
     height: '38px',
     borderRadius: '6px',
     fontWeight: '600',
@@ -393,7 +404,7 @@ const styles = {
     transition: 'background-color 0.2s',
   },
   testBtnPrimary: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: 'var(--color-primary)',
     color: '#FFFFFF',
     border: 'none',
     height: '38px',
@@ -404,9 +415,9 @@ const styles = {
     transition: 'background-color 0.2s',
   },
   testBtnDisabled: {
-    backgroundColor: '#1C1C22',
-    color: '#535362',
-    border: '1px solid #1C1C22',
+    backgroundColor: 'var(--bg-input)',
+    color: 'var(--text-muted)',
+    border: '1px solid var(--bg-input)',
     height: '38px',
     borderRadius: '6px',
     fontWeight: '600',

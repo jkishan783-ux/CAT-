@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/Logo';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -37,8 +39,15 @@ export default function Auth() {
 
   return (
     <div style={styles.container}>
+      <div style={styles.themeTogglePos}>
+        <ThemeToggle />
+      </div>
+
       <div style={styles.brandSection}>
-        <h1 style={styles.brandTitle}>CAT Prep Portal</h1>
+        <div style={styles.logoRow}>
+          <Logo />
+          <h1 style={styles.brandTitle}>CRACK IIM</h1>
+        </div>
         <p style={styles.brandDesc}>
           Master the Common Admission Test with strict timing, detailed scoring, and comprehensive diagnostics.
         </p>
@@ -122,17 +131,30 @@ const styles = {
     textAlign: 'center' as const,
     marginBottom: '32px',
     maxWidth: '480px',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'center',
+  },
+  logoRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '8px',
   },
   brandTitle: {
     fontSize: '36px',
     fontWeight: '800',
-    color: '#FFFFFF',
-    marginBottom: '8px',
+    color: 'var(--text-primary)',
   },
   brandDesc: {
     fontSize: '15px',
-    color: '#8E8E9F',
+    color: 'var(--text-secondary)',
     lineHeight: '22px',
+  },
+  themeTogglePos: {
+    position: 'absolute' as const,
+    top: '24px',
+    right: '24px',
   },
   card: {
     width: '100%',
@@ -141,7 +163,7 @@ const styles = {
   cardTitle: {
     fontSize: '22px',
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     marginBottom: '6px',
   },
   cardSubtitle: {
@@ -176,12 +198,12 @@ const styles = {
     letterSpacing: '0.5px',
   },
   input: {
-    backgroundColor: '#1C1C22',
-    border: '1px solid #26262E',
+    backgroundColor: 'var(--bg-input)',
+    border: '1px solid var(--border-color)',
     borderRadius: '8px',
     height: '44px',
     padding: '0 16px',
-    color: '#FFFFFF',
+    color: 'var(--text-primary)',
     fontSize: '14px',
     outline: 'none',
   },
