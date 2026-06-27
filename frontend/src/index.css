@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg-main: #0A0A0C;
+  --bg-card: #131317;
+  --bg-input: #1C1C22;
+  --border-color: #26262E;
+  
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-orange: #F97316;
+  
+  --text-primary: #FFFFFF;
+  --text-secondary: #8E8E9F;
+  --text-muted: #535362;
+  
+  --glass-bg: rgba(19, 19, 23, 0.7);
+  --glass-border: rgba(38, 38, 46, 0.6);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
+  
+  --font-main: 'Outfit', sans-serif;
+  
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+}
+
+/* Card glassmorphism */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
