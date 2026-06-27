@@ -11,6 +11,7 @@ export interface ParsedQuestion {
   options: string[];
   correctAnswer: string;
   targetTestType: TestType;
+  topic: string;
 }
 
 /**
@@ -64,6 +65,7 @@ export function parseQuestionsCSV(filePath: string): Promise<ParsedQuestion[]> {
             options,
             correctAnswer: row.correctAnswer ? row.correctAnswer.trim() : '',
             targetTestType: targetTestType as TestType,
+            topic: row.topic && row.topic.trim() !== '' ? row.topic.trim() : 'General',
           };
 
           results.push(parsedRow);

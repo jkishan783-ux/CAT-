@@ -13,6 +13,7 @@ export interface IQuestion extends Document {
   options: string[];      // Array of option strings (empty for TITA)
   correctAnswer: string;  // Correct answer string (e.g. choice text or raw input value)
   targetTestType: TestType;
+  topic: string;          // Topic categorizer e.g., "Geometry", "Logarithms", "RC Main Idea"
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,6 +28,7 @@ const QuestionSchema: Schema = new Schema(
     options: { type: [String], default: [] }, // Array of options, e.g. ["A", "B", "C", "D"]
     correctAnswer: { type: String, required: true },
     targetTestType: { type: String, enum: ['mock', 'sectional', 'daily', 'interval'], required: true },
+    topic: { type: String, default: 'General' },
   },
   {
     timestamps: true,

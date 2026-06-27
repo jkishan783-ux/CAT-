@@ -7,6 +7,7 @@ import User from '../models/User';
 import { calculateCATScore } from '../utils/scoringEngine';
 import { calculateNewStreak } from '../utils/streakTracker';
 import { getIntervalWindow } from '../utils/intervalWindow';
+import { generateAnalyticsReport } from '../utils/analyticsEngine';
 
 // Helper to hash string to a deterministic positive integer
 function hashStringToInt(str: string): number {
@@ -284,6 +285,9 @@ export async function submitTest(req: AuthenticatedRequest, res: Response) {
       };
     });
 
+    // 5. Generate advanced analytics report
+    const analytics = generateAnalyticsReport(scoreCard.gradedAnswers, questions);
+
     return res.json({
       message: 'Test submitted successfully.',
       attemptId: newAttempt._id,
@@ -299,6 +303,7 @@ export async function submitTest(req: AuthenticatedRequest, res: Response) {
         streakUpdated,
         previousStreak: oldStreak,
       },
+      analytics,
       gradedAnswers: enrichedGradedAnswers,
     });
   } catch (error: any) {

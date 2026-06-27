@@ -16,8 +16,8 @@ function escapeCSVCell(val: string | null | undefined): string {
 async function seed() {
   const tempCsvPath = path.join(__dirname, 'questions_temp.csv');
 
-  // Define column headers
-  const headers = ['groupId', 'passageText', 'section', 'type', 'questionText', 'options', 'correctAnswer', 'targetTestType'];
+  // Define column headers including topic
+  const headers = ['groupId', 'passageText', 'section', 'type', 'questionText', 'options', 'correctAnswer', 'targetTestType', 'topic'];
 
   // Define dataset rows
   const rows = [
@@ -30,7 +30,8 @@ async function seed() {
       'Which of the following best states the primary thesis of the passage?',
       'Democratization of information has made traditional print media completely obsolete.;The scarcity of attention in digital networks has transformed the economics and quality of published information.;Bundle-pricing was an inefficient rent-seeking behavior by publisher-gatekeepers.;Sensationalism is a necessary developmental phase in digital attention markets.',
       'The scarcity of attention in digital networks has transformed the economics and quality of published information.',
-      'mock'
+      'mock',
+      'Reading Comprehension'
     ],
     [
       'rc_set_1',
@@ -40,7 +41,8 @@ async function seed() {
       'According to the passage, the classical model of publishing captured rents primarily because:',
       'Publisher-gatekeepers controlled physical logistics and distribution channels.;Sensationalism was not a dominant factor in early print networks.;Attention was not yet a scarce resource in print economics.;Bundle-pricing was legally protected under monopolistic laws.',
       'Publisher-gatekeepers controlled physical logistics and distribution channels.',
-      'mock'
+      'mock',
+      'Reading Comprehension'
     ],
     [
       'rc_set_1',
@@ -50,7 +52,8 @@ async function seed() {
       'The author implies that the transition to an "attention economy" has:',
       'Created an environment where in-depth analytical content is systematically de-prioritized by algorithms.;Forced digital platforms to return to a bundle-pricing model for advertisement streams.;Substantially lowered the production cost of premium journalism.;Empowered classical gatekeepers to regain market share.',
       'Created an environment where in-depth analytical content is systematically de-prioritized by algorithms.',
-      'mock'
+      'mock',
+      'Reading Comprehension'
     ],
 
     // 2. Data Interpretation / Logical Reasoning (DILR) Set - 2 questions sharing the same groupId "dilr_set_1"
@@ -62,7 +65,8 @@ async function seed() {
       'Which candidate achieved the highest overall score?',
       'Candidate A;Candidate B;Candidate D;Candidate E',
       'Candidate E',
-      'mock'
+      'mock',
+      'Data Interpretation'
     ],
     [
       'dilr_set_1',
@@ -71,8 +75,9 @@ async function seed() {
       'MCQ',
       'What is the difference between the highest sectional score in DILR and the lowest sectional score in QA?',
       '14 marks;16 marks;18 marks;20 marks',
-      '18 marks', // DILR max = 96 (Candidate C), QA min = 78 (Candidate C) -> 96 - 78 = 18
-      'mock'
+      '18 marks',
+      'mock',
+      'Data Interpretation'
     ],
 
     // 3. Quantitative Aptitude (QA) Questions (including LaTeX formulas)
@@ -84,7 +89,8 @@ async function seed() {
       'Solve for $$x$$ in the logarithmic equation: $$\log_2(x) + \log_2(x-2) = 3$$.',
       '$$x = 4$$;$$x = -2$$;$$x = 4$$ or $$x = -2$$;$$x = 8$$',
       '$$x = 4$$',
-      'mock'
+      'mock',
+      'Logarithms'
     ],
     [
       '',
@@ -93,8 +99,9 @@ async function seed() {
       'MCQ',
       'If $$f(x) = \sqrt{x^2 + 2x + 1}$$ and $$g(x) = x^2 - 1$$, find the compound value of $$g(f(3))$$.',
       '15;24;8;9',
-      '15', // f(3) = sqrt(3^2 + 6 + 1) = sqrt(16) = 4. g(4) = 4^2 - 1 = 15.
-      'mock'
+      '15',
+      'mock',
+      'Functions'
     ],
     [
       '',
@@ -104,7 +111,8 @@ async function seed() {
       'Calculate the limit of the fraction as $$x \to \infty$$: $$L = \lim_{x \to \infty} \frac{3x^2 + 5x + 2}{x^2 - 4x + 9}$$.',
       '',
       '3',
-      'daily'
+      'daily',
+      'Limits'
     ],
     [
       '',
@@ -113,8 +121,9 @@ async function seed() {
       'TITA',
       'If $$y = \sum_{n=1}^{4} n^3$$, what is the numerical value of $$y$$?',
       '',
-      '100', // 1^3 + 2^3 + 3^3 + 4^3 = 1 + 8 + 27 + 64 = 100.
-      'interval'
+      '100',
+      'interval',
+      'Algebra'
     ],
     [
       '',
@@ -123,8 +132,9 @@ async function seed() {
       'MCQ',
       'An arithmetic progression (AP) has a first term $$a_1 = 5$$ and a common difference $$d = 3$$. What is the sum of the first 10 terms of this progression?',
       '$$185$$;$$200$$;$$170$$;$$215$$',
-      '$$185$$', // S_10 = 10/2 * (2*5 + 9*3) = 5 * (10 + 27) = 5 * 37 = 185.
-      'daily'
+      '$$185$$',
+      'daily',
+      'Arithmetic Progressions'
     ],
     [
       '',
@@ -133,8 +143,9 @@ async function seed() {
       'MCQ',
       'What is the value of the exponent expression: $$\frac{3^{n+4} - 9 \cdot 3^n}{3^{n+2}}$$ for any integer $$n$$?',
       '8;9;3;27',
-      '8', // (3^n * 81 - 9 * 3^n) / (9 * 3^n) = (81 - 9)/9 = 72/9 = 8.
-      'interval'
+      '8',
+      'interval',
+      'Exponents'
     ],
     [
       '',
@@ -143,8 +154,9 @@ async function seed() {
       'MCQ',
       'A cylinder has a base radius of $$r = 7\text{ cm}$$ and a height of $$h = 10\text{ cm}$$. Calculate its total surface area using $$\pi = \frac{22}{7}$$.',
       '$$748\text{ cm}^2$$;$$616\text{ cm}^2$$;$$440\text{ cm}^2$$;$$880\text{ cm}^2$$',
-      '$$748\text{ cm}^2$$', // TSA = 2*pi*r*(r+h) = 2 * 22/7 * 7 * (7+10) = 44 * 17 = 748.
-      'interval'
+      '$$748\text{ cm}^2$$',
+      'interval',
+      'Geometry'
     ],
     [
       '',
@@ -153,8 +165,9 @@ async function seed() {
       'MCQ',
       'If $$x + \frac{1}{x} = 5$$, find the value of $$x^2 + \frac{1}{x^2}$$.',
       '23;25;27;21',
-      '23', // (x + 1/x)^2 - 2 = 25 - 2 = 23.
-      'interval'
+      '23',
+      'interval',
+      'Algebra'
     ],
     [
       '',
@@ -163,8 +176,9 @@ async function seed() {
       'MCQ',
       'If $$P = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$$, find the determinant of $$P$$.',
       '6;5;2;0',
-      '6', // 2*3 - 1*0 = 6.
-      'daily'
+      '6',
+      'daily',
+      'Matrices'
     ],
     [
       '',
@@ -173,8 +187,9 @@ async function seed() {
       'MCQ',
       'What is the value of $$\log_{10}(1000) - \log_{2}(16)$$?',
       '-1;1;0;-2',
-      '-1', // 3 - 4 = -1.
-      'daily'
+      '-1',
+      'daily',
+      'Logarithms'
     ]
   ];
 
