@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Alert } from 'react-native';
 interface CATSectionTimerProps {
   sections: Array<{ sectionName: string; timeLimitMinutes: number }>;
   currentSectionIndex: number;
+  initialSecondsLeft?: number; // Loaded remaining seconds for state recovery
+  onTimerTick?: (secondsLeft: number) => void; // Reports each second tick for auto-saving
   onSectionComplete: (index: number) => void;
   onTestComplete: () => void;
 }
@@ -11,19 +13,27 @@ interface CATSectionTimerProps {
 export default function CATSectionTimer({
   sections,
   currentSectionIndex,
+  initialSecondsLeft,
+  onTimerTick,
   onSectionComplete,
   onTestComplete,
 }: CATSectionTimerProps) {
   const activeSection = sections[currentSectionIndex];
   // Convert minutes to seconds
-  const [secondsLeft, setSecondsLeft] = useState(activeSection ? activeSection.timeLimitMinutes * 60 : 0);
+  const [secondsLeft, setSecondsLeft] = useState(
+    initialSecondsLeft !== undefined ? initialSecondsLeft : (activeSection ? activeSection.timeLimitMinutes * 60 : 0)
+  );
 
   // Sync state whenever the section index changes
   useEffect(() => {
     if (activeSection) {
-      setSecondsLeft(activeSection.timeLimitMinutes * 60);
+      if (initialSecondsLeft !== undefined) {
+        setSecondsLeft(initialSecondsLeft);
+      } else {
+        setSecondsLeft(activeSection.timeLimitMinutes * 60);
+      }
     }
-  }, [currentSectionIndex]);
+  }, [currentSectionIndex, initialSecondsLeft]);
 
   useEffect(() => {
     if (secondsLeft <= 0) {
@@ -32,7 +42,13 @@ export default function CATSectionTimer({
     }
 
     const timer = setInterval(() => {
-      setSecondsLeft((prev) => prev - 1);
+      setSecondsLeft((prev) => {
+        const next = prev - 1;
+        if (onTimerTick) {
+          onTimerTick(next);
+        }
+        return next;
+      });
     }, 1000);
 
     return () => clearInterval(timer);

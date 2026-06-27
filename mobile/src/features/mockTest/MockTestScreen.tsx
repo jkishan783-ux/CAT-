@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CATSectionTimer from '../../components/CATSectionTimer';
 
 // Mock Test Schema Interfaces
@@ -43,12 +44,87 @@ export default function MockTestScreen({ testId, sections, onSubmitTest }: MockT
   // Maps questionId -> timeSpent (seconds)
   const [timeSpent, setTimeSpent] = useState<Record<string, number>>({});
 
+  // Session resilience states
+  const [restoredSecondsLeft, setRestoredSecondsLeft] = useState<number | undefined>(undefined);
+  const [isSessionChecked, setIsSessionChecked] = useState(false);
+
   const activeSection = sections[currentSectionIndex];
   const activeQuestions = activeSection ? activeSection.questions : [];
   const activeQuestion = activeQuestions[currentQuestionIndex];
 
+  // Ref to track remaining seconds without triggering constant parent re-renders
+  const secondsLeftRef = useRef<number>(activeSection ? activeSection.timeLimitMinutes * 60 : 0);
+
+  // 1. Check for unsubmitted local test session on mount
+  useEffect(() => {
+    async function checkSavedSession() {
+      try {
+        const savedSession = await AsyncStorage.getItem(`UNSUBMITTED_TEST_${testId}`);
+        if (savedSession) {
+          const parsed = JSON.parse(savedSession);
+          Alert.alert(
+            'Resume Test Session',
+            `You have an uncompleted test session from ${new Date(parsed.timestamp).toLocaleTimeString()}. Would you like to resume?`,
+            [
+              {
+                text: 'Discard & Restart',
+                style: 'destructive',
+                onPress: async () => {
+                  await AsyncStorage.removeItem(`UNSUBMITTED_TEST_${testId}`);
+                  setIsSessionChecked(true);
+                },
+              },
+              {
+                text: 'Resume',
+                onPress: () => {
+                  setAnswers(parsed.answers || {});
+                  setTimeSpent(parsed.timeSpent || {});
+                  setCurrentSectionIndex(parsed.currentSectionIndex || 0);
+                  setCurrentQuestionIndex(parsed.currentQuestionIndex || 0);
+                  setRestoredSecondsLeft(parsed.secondsLeft);
+                  secondsLeftRef.current = parsed.secondsLeft;
+                  setIsSessionChecked(true);
+                },
+              },
+            ]
+          );
+        } else {
+          setIsSessionChecked(true);
+        }
+      } catch (error) {
+        console.error('Failed to load saved test session:', error);
+        setIsSessionChecked(true);
+      }
+    }
+    checkSavedSession();
+  }, [testId]);
+
+  // 2. Auto-save test state locally every 10 seconds
+  useEffect(() => {
+    if (!isSessionChecked) return;
+
+    const autoSaveInterval = setInterval(async () => {
+      try {
+        const sessionState = {
+          answers,
+          timeSpent,
+          currentSectionIndex,
+          currentQuestionIndex,
+          secondsLeft: secondsLeftRef.current,
+          timestamp: Date.now(),
+        };
+        await AsyncStorage.setItem(`UNSUBMITTED_TEST_${testId}`, JSON.stringify(sessionState));
+        console.log('Test session state auto-saved.');
+      } catch (error) {
+        console.error('Failed to auto-save test session:', error);
+      }
+    }, 10000);
+
+    return () => clearInterval(autoSaveInterval);
+  }, [answers, timeSpent, currentSectionIndex, currentQuestionIndex, testId, isSessionChecked]);
+
   // Increment timer every second for the active question
-  React.useEffect(() => {
+  useEffect(() => {
     if (!activeQuestion) return;
     
     const interval = setInterval(() => {
@@ -90,7 +166,8 @@ export default function MockTestScreen({ testId, sections, onSubmitTest }: MockT
   };
 
   const handleSectionComplete = (nextSectionIndex: number) => {
-    // Lock logic: move forward to next section index and reset question index
+    // Clear restored time offset when manually moving to next section
+    setRestoredSecondsLeft(undefined);
     setCurrentSectionIndex(nextSectionIndex);
     setCurrentQuestionIndex(0);
   };
@@ -100,7 +177,7 @@ export default function MockTestScreen({ testId, sections, onSubmitTest }: MockT
     const sectionName = activeSection.sectionName;
 
     Alert.alert(
-      'Confirm Section Submission',
+      'Confirm Submission',
       isLastSection
         ? `Are you sure you want to finish the ${sectionName} section? This will submit your entire mock test.`
         : `Are you sure you want to lock the ${sectionName} section and move to the next? You CANNOT go back to this section later.`,
@@ -120,7 +197,15 @@ export default function MockTestScreen({ testId, sections, onSubmitTest }: MockT
     );
   };
 
-  const handleFinalSubmit = () => {
+  const handleFinalSubmit = async () => {
+    // Clear the auto-saved session upon successful submission
+    try {
+      await AsyncStorage.removeItem(`UNSUBMITTED_TEST_${testId}`);
+      console.log('Saved test session cleared.');
+    } catch (error) {
+      console.error('Failed to remove saved test session:', error);
+    }
+
     // Package answers
     const submissionAnswers = [];
     for (const section of sections) {
@@ -149,6 +234,10 @@ export default function MockTestScreen({ testId, sections, onSubmitTest }: MockT
       <CATSectionTimer
         sections={sections}
         currentSectionIndex={currentSectionIndex}
+        initialSecondsLeft={restoredSecondsLeft}
+        onTimerTick={(secs) => {
+          secondsLeftRef.current = secs;
+        }}
         onSectionComplete={handleSectionComplete}
         onTestComplete={handleFinalSubmit}
       />
