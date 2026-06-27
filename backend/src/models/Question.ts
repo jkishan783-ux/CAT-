@@ -36,6 +36,5 @@ const QuestionSchema: Schema = new Schema(
 );
 
 QuestionSchema.index({ targetTestType: 1, section: 1 });
-QuestionSchema.index({ groupId: 1 });
 
 export default mongoose.model<IQuestion>('Question', QuestionSchema);
