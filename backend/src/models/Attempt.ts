@@ -58,4 +58,7 @@ const AttemptSchema: Schema = new Schema(
   }
 );
 
+AttemptSchema.index({ userId: 1, testId: 1 });
+AttemptSchema.index({ completedAt: -1 });
+
 export default mongoose.model<IAttempt>('Attempt', AttemptSchema);

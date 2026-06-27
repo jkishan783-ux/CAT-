@@ -27,4 +27,7 @@ const UserSchema: Schema = new Schema(
   }
 );
 
+UserSchema.index({ streakCounter: -1 });
+UserSchema.index({ highestMockScore: -1 });
+
 export default mongoose.model<IUser>('User', UserSchema);

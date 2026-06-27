@@ -135,7 +135,7 @@ export default function ScorecardScreen({
           <View style={styles.successPanel}>
             <Text style={styles.successPanelTitle}>🚀 Excellent Time Management!</Text>
             <Text style={styles.successPanelDesc}>
-              No time traps detected. You did not spend excessive time (>3 minutes) on questions answered incorrectly.
+              No time traps detected. You did not spend excessive time (more than 3 minutes) on questions answered incorrectly.
             </Text>
           </View>
         )}

@@ -12,9 +12,11 @@
       "backgroundColor": "#121214"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jkishan.catprep"
     },
     "android": {
+      "package": "com.jkishan.catprep",
       "adaptiveIcon": {
         "backgroundColor": "#121214"
       }
